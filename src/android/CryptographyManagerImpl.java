@@ -57,7 +57,7 @@ class CryptographyManagerImpl implements CryptographyManager {
                     .setStartDate(start.getTime())
                     .setEndDate(end.getTime())
                     .build();
-            KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM_AES, ANDROID_KEYSTORE);
+            KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM_AES, keyName);
             kg.init(keySpec);
             return kg.generateKey();
         } catch (Exception e) {
@@ -69,7 +69,7 @@ class CryptographyManagerImpl implements CryptographyManager {
     private SecretKey getOrCreateSecretKeyNew(String keyName, boolean invalidateOnEnrollment) throws CryptoException {
         try {
             // If Secretkey was previously created for that keyName, then grab and return it.
-            KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
+            KeyStore keyStore = KeyStore.getInstance(keyName);
             keyStore.load(null); // Keystore must be loaded before it can be accessed
 
 
@@ -91,7 +91,7 @@ class CryptographyManagerImpl implements CryptographyManager {
             }
 
             KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_ALGORITHM_AES,
-                    ANDROID_KEYSTORE);
+                    keyName);
             keyGenerator.init(keyGenParamsBuilder.build());
 
             return keyGenerator.generateKey();
@@ -140,7 +140,7 @@ class CryptographyManagerImpl implements CryptographyManager {
 
     private void removeKey(String keyName) throws CryptoException {
         try {
-            KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
+            KeyStore keyStore = KeyStore.getInstance(keyName);
             keyStore.load(null); // Keystore must be loaded before it can be accessed
             keyStore.deleteEntry(keyName);
         } catch (Exception e) {
