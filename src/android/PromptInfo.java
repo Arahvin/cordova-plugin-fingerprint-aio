@@ -16,6 +16,7 @@ class PromptInfo {
     private static final String INVALIDATE_ON_ENROLLMENT = "invalidateOnEnrollment";
     private static final String SECRET = "secret";
     private static final String BIOMETRIC_ACTIVITY_TYPE = "biometricActivityType";
+    private static final String SECRET_KEY = "secretKey";
 
     static final String SECRET_EXTRA = "secret";
 
@@ -57,6 +58,10 @@ class PromptInfo {
         return bundle.getString(SECRET);
     }
 
+    String getSecretKey() {
+        return bundle.getString(SECRET_KEY);
+    }
+
     boolean invalidateOnEnrollment() {
         return bundle.getBoolean(INVALIDATE_ON_ENROLLMENT);
     }
@@ -78,6 +83,7 @@ class PromptInfo {
         private boolean invalidateOnEnrollment = false;
         private String secret = null;
         private BiometricActivityType type = null;
+        private String secretKey = "__aio_secret_key";
 
         Builder(String applicationLabel) {
             if (applicationLabel == null) {
@@ -110,6 +116,7 @@ class PromptInfo {
             bundle.putBoolean(CONFIRMATION_REQUIRED, this.confirmationRequired);
             bundle.putBoolean(INVALIDATE_ON_ENROLLMENT, this.invalidateOnEnrollment);
             bundle.putInt(BIOMETRIC_ACTIVITY_TYPE, this.type.getValue());
+            bundle.putString(SECRET_KEY, this.secretKey);
             promptInfo.bundle = bundle;
 
             return promptInfo;
@@ -128,6 +135,7 @@ class PromptInfo {
             confirmationRequired = args.getBoolean(CONFIRMATION_REQUIRED, confirmationRequired);
             invalidateOnEnrollment = args.getBoolean(INVALIDATE_ON_ENROLLMENT, false);
             secret = args.getString(SECRET, null);
+            secretKey = args.getString(SECRET_KEY, secretKey);
         }
     }
 }
