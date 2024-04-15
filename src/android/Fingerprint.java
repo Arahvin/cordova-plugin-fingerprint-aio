@@ -54,15 +54,16 @@ public class Fingerprint extends CordovaPlugin {
              return true;
 
          } else if ("isAvailable".equals(action)) {
-            executeIsAvailable();
+            executeIsAvailable(args);
             return true;
 
         }
         return false;
     }
 
-    private void executeIsAvailable() {
-        PluginError error = canAuthenticate();
+    private void executeIsAvailable(JSONArray args) {
+        boolean requireStrongBiometrics = new Args(args).getBoolean("requireStrongBiometrics", false);
+        PluginError error = canAuthenticate(requireStrongBiometrics);
         if (error != null) {
             sendError(error);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
@@ -88,8 +89,13 @@ public class Fingerprint extends CordovaPlugin {
         this.runBiometricActivity(args, BiometricActivityType.JUST_AUTHENTICATE);
     }
 
+    private boolean determineStrongBiometricsRequired(BiometricActivityType type) {
+        return type == BiometricActivityType.REGISTER_SECRET || type == BiometricActivityType.LOAD_SECRET;
+    }
+
     private void runBiometricActivity(JSONArray args, BiometricActivityType type) {
-        PluginError error = canAuthenticate();
+        boolean requireStrongBiometrics = determineStrongBiometricsRequired(type);
+        PluginError error = canAuthenticate(requireStrongBiometrics);
         if (error != null) {
             sendError(error);
             return;
@@ -135,8 +141,8 @@ public class Fingerprint extends CordovaPlugin {
         }
     }
 
-    private PluginError canAuthenticate() {
-        int error = BiometricManager.from(cordova.getContext()).canAuthenticate();
+    private PluginError canAuthenticate(boolean requireStrongBiometrics) {
+        int error = BiometricManager.from(cordova.getContext()).canAuthenticate(requireStrongBiometrics ? BiometricManager.Authenticators.BIOMETRIC_STRONG : BiometricManager.Authenticators.BIOMETRIC_WEAK);
         switch (error) {
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
@@ -157,8 +163,12 @@ public class Fingerprint extends CordovaPlugin {
 
             PluginResult result = new PluginResult(PluginResult.Status.ERROR, resultJson);
             result.setKeepCallback(true);
-            cordova.getActivity().runOnUiThread(() ->
-                    Fingerprint.this.mCallbackContext.sendPluginResult(result));
+            if (cordova.getActivity() != null) {
+                cordova.getActivity().runOnUiThread(() ->
+                        this.mCallbackContext.sendPluginResult(result));
+            } else {
+                Log.e(TAG, "Cordova activity does not exist.");
+            }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage(), e);
         }
