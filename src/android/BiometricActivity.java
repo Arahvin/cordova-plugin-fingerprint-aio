@@ -70,7 +70,7 @@ public class BiometricActivity extends AppCompatActivity {
             throw new CryptoException(PluginError.BIOMETRIC_ARGS_PARSING_FAILED);
         }
         Cipher cipher = mCryptographyManager
-                .getInitializedCipherForEncryption(mPromptInfo.getSecretKey(), invalidateOnEnrollment, this);
+                .getInitializedCipherForEncryption(mPromptInfo.getSecretKey(), false, this);
         mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
     }
 
