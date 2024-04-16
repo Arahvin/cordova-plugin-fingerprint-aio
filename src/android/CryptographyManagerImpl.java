@@ -83,7 +83,7 @@ class CryptographyManagerImpl implements CryptographyManager {
 
             SecretKey key = (SecretKey) keyStore.getKey(keyName, null);
             if (key != null) {
-                Log.d("CORDOVA_FINGERPRINT_PLUGIN Key", key);
+                Log.d("CORDOVA_FINGERPRINT_PLUGIN Key", key.toString());
                 return key;
             }
 
@@ -144,6 +144,8 @@ class CryptographyManagerImpl implements CryptographyManager {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(128, initializationVector));
             return cipher;
         } catch (Exception e) {
+            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.getMessage());
+            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.cause.getMessage());
             handleException(e, keyName);
             throw new CryptoException(e.getMessage(), e);
         }
