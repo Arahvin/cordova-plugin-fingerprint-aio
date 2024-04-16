@@ -21,6 +21,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.security.auth.x500.X500Principal;
 
+import android.util.Log;
+
 class CryptographyManagerImpl implements CryptographyManager {
 
     private static final int KEY_SIZE = 256;
