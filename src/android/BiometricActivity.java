@@ -17,6 +17,8 @@ import java.util.concurrent.Executor;
 
 import javax.crypto.Cipher;
 
+import android.util.Log;
+
 public class BiometricActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 2;
@@ -66,6 +68,11 @@ public class BiometricActivity extends AppCompatActivity {
     }
 
     private void authenticateToEncrypt(boolean invalidateOnEnrollment) throws CryptoException {
+        try {
+
+        } catch (Exception e) {
+            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION authenticateToEncrypt", e.getMessage());
+        }
         if (mPromptInfo.getSecret() == null) {
             throw new CryptoException(PluginError.BIOMETRIC_ARGS_PARSING_FAILED);
         }
