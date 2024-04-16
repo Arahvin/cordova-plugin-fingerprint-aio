@@ -22,6 +22,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.security.auth.x500.X500Principal;
 
 import android.util.Log;
+import java.util.Enumeration;
 
 class CryptographyManagerImpl implements CryptographyManager {
 
