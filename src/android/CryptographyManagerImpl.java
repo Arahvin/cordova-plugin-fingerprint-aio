@@ -92,7 +92,7 @@ class CryptographyManagerImpl implements CryptographyManager {
                     .setUserAuthenticationRequired(true);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Log.d("CORDOVA_FINGERPRINT_PLUGIN", invalidateOnEnrollment+"")
+                Log.d("CORDOVA_FINGERPRINT_PLUGIN", invalidateOnEnrollment+"");
                 keyGenParamsBuilder.setInvalidatedByBiometricEnrollment(invalidateOnEnrollment);
             }
 
@@ -102,7 +102,7 @@ class CryptographyManagerImpl implements CryptographyManager {
 
             return keyGenerator.generateKey();
         } catch (Exception e) {
-            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION", e.getMessage())
+            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION", e.getMessage());
             throw new CryptoException(e.getMessage(), e);
         }
     }
