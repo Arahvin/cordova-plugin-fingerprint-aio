@@ -71,7 +71,12 @@ class CryptographyManagerImpl implements CryptographyManager {
             // If Secretkey was previously created for that keyName, then grab and return it.
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null); // Keystore must be loaded before it can be accessed
+            Enumeration<String> aliases = keyStore.aliases();
 
+            while(aliases.hasMoreElements()) {
+                String alias = aliases.nextElement();
+                Log.d("CORDOVA_FINGERPRINT_PLUGIN Alias", alias);
+            }
 
             SecretKey key = (SecretKey) keyStore.getKey(keyName, null);
             if (key != null) {
