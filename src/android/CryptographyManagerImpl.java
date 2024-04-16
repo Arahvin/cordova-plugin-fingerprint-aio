@@ -145,7 +145,7 @@ class CryptographyManagerImpl implements CryptographyManager {
             return cipher;
         } catch (Exception e) {
             Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.getMessage());
-            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.cause.getMessage());
+            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.getCause().getMessage());
             handleException(e, keyName);
             throw new CryptoException(e.getMessage(), e);
         }
