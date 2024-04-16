@@ -83,6 +83,7 @@ class CryptographyManagerImpl implements CryptographyManager {
 
             SecretKey key = (SecretKey) keyStore.getKey(keyName, null);
             if (key != null) {
+                Log.d("CORDOVA_FINGERPRINT_PLUGIN Key", key);
                 return key;
             }
 
