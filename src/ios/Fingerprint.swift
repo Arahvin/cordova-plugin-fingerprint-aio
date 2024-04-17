@@ -143,7 +143,7 @@ enum PluginError:Int {
         let data  = command.arguments[0] as AnyObject?;
         var pluginResult: CDVPluginResult
         do {
-            let secret = Secret()
+            let secret = Secret(keyName: data?.object(forKey: "secretKey") as? String)
             try? secret.delete()
             let invalidateOnEnrollment = (data?.object(forKey: "invalidateOnEnrollment") as? Bool) ?? false
             try secret.save(secretStr, invalidateOnEnrollment: invalidateOnEnrollment)
@@ -165,7 +165,8 @@ enum PluginError:Int {
         }
         var pluginResult: CDVPluginResult
         do {
-            let result = try Secret().load(prompt)
+            let secret = Secret(keyName: data?.object(forKey: "secretKey") as? String)
+            let result = try secret.load(prompt)
             pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: result);
         } catch {
             var code = PluginError.BIOMETRIC_UNKNOWN_ERROR.rawValue
@@ -243,7 +244,11 @@ struct KeychainError: Error {
 
 class Secret {
 
-    private static let keyName: String = "__aio_key"
+    private var keyName: String = "__aio_key"
+
+    init(keyName: String) {
+        self.keyName = keyName
+    }
 
     private func getBioSecAccessControl(invalidateOnEnrollment: Bool) -> SecAccessControl {
         var access: SecAccessControl?
