@@ -12,14 +12,16 @@ class EncryptedData {
 
     private byte[] ciphertext;
     private byte[] initializationVector;
+    private String secretKey;
 
-    EncryptedData(byte[] ciphertext, byte[] initializationVector) {
+    EncryptedData(byte[] ciphertext, byte[] initializationVector, String secretKey) {
         this.ciphertext = ciphertext;
         this.initializationVector = initializationVector;
+        this.secretKey = secretKey;
     }
 
     static byte[] loadInitializationVector(Context context) throws CryptoException {
-        return load(IV_KEY_NAME, context);
+        return load(IV_KEY_NAME+secretKey, context);
     }
 
     static byte[] loadCiphertext(Context context) throws CryptoException {
@@ -27,7 +29,7 @@ class EncryptedData {
     }
 
     void save(Context context) {
-        save(IV_KEY_NAME, initializationVector, context);
+        save(IV_KEY_NAME+secretKey, initializationVector, context);
         save(CIPHERTEXT_KEY_NAME, ciphertext, context);
     }
 

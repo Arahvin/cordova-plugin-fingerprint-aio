@@ -152,11 +152,11 @@ class CryptographyManagerImpl implements CryptographyManager {
     }
 
     @Override
-    public EncryptedData encryptData(String plaintext, Cipher cipher) throws CryptoException {
+    public EncryptedData encryptData(String plaintext, Cipher cipher, String secretKey) throws CryptoException {
         try {
             byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
             Log.d("CORDOVA_BIOMETRIC", cipher.getIV()+"");
-            return new EncryptedData(ciphertext, cipher.getIV());
+            return new EncryptedData(ciphertext, cipher.getIV(), secretKey);
         } catch (Exception e) {
             throw new CryptoException(e.getMessage(), e);
         }
