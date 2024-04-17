@@ -155,6 +155,7 @@ class CryptographyManagerImpl implements CryptographyManager {
     public EncryptedData encryptData(String plaintext, Cipher cipher) throws CryptoException {
         try {
             byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+            Log.d("CORDOVA_BIOMETRIC", cipher.getIV()+"");
             return new EncryptedData(ciphertext, cipher.getIV());
         } catch (Exception e) {
             throw new CryptoException(e.getMessage(), e);
