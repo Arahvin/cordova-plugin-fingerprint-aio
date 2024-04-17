@@ -24,13 +24,13 @@ class EncryptedData {
         return load(IV_KEY_NAME+secretKey, context);
     }
 
-    static byte[] loadCiphertext(Context context) throws CryptoException {
-        return load(CIPHERTEXT_KEY_NAME, context);
+    static byte[] loadCiphertext(Context context, String secretKey) throws CryptoException {
+        return load(CIPHERTEXT_KEY_NAME+secretKey, context);
     }
 
     void save(Context context) {
         save(IV_KEY_NAME+secretKey, initializationVector, context);
-        save(CIPHERTEXT_KEY_NAME, ciphertext, context);
+        save(CIPHERTEXT_KEY_NAME+secretKey, ciphertext, context);
     }
 
     private void save(String key, byte[] value, Context context) {

@@ -219,7 +219,7 @@ public class BiometricActivity extends AppCompatActivity {
 
     private Intent getDecryptedIntent(BiometricPrompt.CryptoObject cryptoObject) throws CryptoException {
         try {
-            byte[] ciphertext = EncryptedData.loadCiphertext(this);
+            byte[] ciphertext = EncryptedData.loadCiphertext(this, mPromptInfo.getSecretKey());
             Log.d("CORDOVA_BIOMETRIC cipherText", ciphertext+"");
             Log.d("CORDOVA_BIOMETRIC cryptoObject.getCipher", cryptoObject.getCipher()+"");
             String secret = mCryptographyManager.decryptData(ciphertext, cryptoObject.getCipher());
