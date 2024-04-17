@@ -226,10 +226,10 @@ public class BiometricActivity extends AppCompatActivity {
                 intent.putExtra(PromptInfo.SECRET_EXTRA, secret);
                 return intent;
             }
-            return null;
         } catch (CryptoException e) {
             Log.d("CORDOVA_BIOMETRIC", e.getMessage()+"");
         }
+        return null;
     }
 
     private void finishWithError(CryptoException e) {
