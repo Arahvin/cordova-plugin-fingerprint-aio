@@ -167,7 +167,6 @@ class CryptographyManagerImpl implements CryptographyManager {
             byte[] plaintext = cipher.doFinal(ciphertext);
             return new String(plaintext, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            Log.d("CORDOVA_BIOMETRIC decryptData", e.getMessage());
             throw new CryptoException(e.getMessage(), e);
         }
     }

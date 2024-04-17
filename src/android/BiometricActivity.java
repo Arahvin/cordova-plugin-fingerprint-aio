@@ -84,7 +84,6 @@ public class BiometricActivity extends AppCompatActivity {
         byte[] initializationVector = EncryptedData.loadInitializationVector(this);
         Cipher cipher = mCryptographyManager
                 .getInitializedCipherForDecryption(mPromptInfo.getSecretKey(), initializationVector, this);
-        Log.d("CORDOVA_BIOMETRIC", cipher.toString());
         mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
     }
 
@@ -219,14 +218,18 @@ public class BiometricActivity extends AppCompatActivity {
     }
 
     private Intent getDecryptedIntent(BiometricPrompt.CryptoObject cryptoObject) throws CryptoException {
-        byte[] ciphertext = EncryptedData.loadCiphertext(this);
-        String secret = mCryptographyManager.decryptData(ciphertext, cryptoObject.getCipher());
-        if (secret != null) {
-            Intent intent = new Intent();
-            intent.putExtra(PromptInfo.SECRET_EXTRA, secret);
-            return intent;
+        try {
+            byte[] ciphertext = EncryptedData.loadCiphertext(this);
+            String secret = mCryptographyManager.decryptData(ciphertext, cryptoObject.getCipher());
+            if (secret != null) {
+                Intent intent = new Intent();
+                intent.putExtra(PromptInfo.SECRET_EXTRA, secret);
+                return intent;
+            }
+            return null;
+        } catch (CryptoException e) {
+            Log.d("CORDOVA_BIOMETRIC", e.getMessage()+"");
         }
-        return null;
     }
 
     private void finishWithError(CryptoException e) {
