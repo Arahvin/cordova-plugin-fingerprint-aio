@@ -247,7 +247,9 @@ class Secret {
     private var keyName: String = "__aio_key"
 
     init(keyName: String) {
-        self.keyName = keyName
+        if(keyName) {
+            self.keyName = keyName
+        }
     }
 
     private func getBioSecAccessControl(invalidateOnEnrollment: Bool) -> SecAccessControl {
@@ -277,9 +279,9 @@ class Secret {
         // context.touchIDAuthenticationAllowableReuseDuration = 10
 
         // Build the query for use in the add operation.
-        print("Secret keyName on save: ", Secret.keyName)
+        print("Secret keyName on save: ", keyName)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: Secret.keyName,
+                                    kSecAttrAccount as String: keyName,
                                     kSecAttrAccessControl as String: getBioSecAccessControl(invalidateOnEnrollment: invalidateOnEnrollment),
                                     kSecValueData as String: password]
 
@@ -288,9 +290,9 @@ class Secret {
     }
 
     func load(_ prompt: String) throws -> String {
-        print("Secret keyName on load: ", Secret.keyName)
+        print("Secret keyName on load: ", keyName)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: Secret.keyName,
+                                    kSecAttrAccount as String: keyName,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnData as String : kCFBooleanTrue,
                                     kSecAttrAccessControl as String: getBioSecAccessControl(invalidateOnEnrollment: true),
@@ -312,7 +314,7 @@ class Secret {
 
     func delete() throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: Secret.keyName]
+                                    kSecAttrAccount as String: keyName]
 
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess else { throw KeychainError(status: status) }
