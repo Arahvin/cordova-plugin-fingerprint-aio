@@ -16,6 +16,7 @@ class CryptoException extends Exception {
     }
 
     private CryptoException(PluginError error, String message, Exception cause) {
+        Log.d("CORDOVA_BIOMETRIC CryptoException", message);
         super(message, cause);
         this.error = error;
     }
