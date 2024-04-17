@@ -68,16 +68,12 @@ public class BiometricActivity extends AppCompatActivity {
     }
 
     private void authenticateToEncrypt(boolean invalidateOnEnrollment) throws CryptoException {
-        try {
-            if (mPromptInfo.getSecret() == null) {
-                throw new CryptoException(PluginError.BIOMETRIC_ARGS_PARSING_FAILED);
-            }
-            Cipher cipher = mCryptographyManager
-                    .getInitializedCipherForEncryption(mPromptInfo.getSecretKey(), invalidateOnEnrollment, this);
-            mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
-        } catch (Exception e) {
-            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION authenticateToEncrypt", e.getMessage());
+        if (mPromptInfo.getSecret() == null) {
+            throw new CryptoException(PluginError.BIOMETRIC_ARGS_PARSING_FAILED);
         }
+        Cipher cipher = mCryptographyManager
+                .getInitializedCipherForEncryption(mPromptInfo.getSecretKey(), invalidateOnEnrollment, this);
+        mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
     }
 
     private void justAuthenticate() {
@@ -88,6 +84,7 @@ public class BiometricActivity extends AppCompatActivity {
         byte[] initializationVector = EncryptedData.loadInitializationVector(this);
         Cipher cipher = mCryptographyManager
                 .getInitializedCipherForDecryption(mPromptInfo.getSecretKey(), initializationVector, this);
+        Log.d("CORDOVA_BIOMETRIC", cipher.toString());
         mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
     }
 

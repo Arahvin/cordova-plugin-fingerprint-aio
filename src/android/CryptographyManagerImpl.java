@@ -21,9 +21,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.security.auth.x500.X500Principal;
 
-import android.util.Log;
-import java.util.Enumeration;
-
 class CryptographyManagerImpl implements CryptographyManager {
 
     private static final int KEY_SIZE = 256;
@@ -47,6 +44,7 @@ class CryptographyManagerImpl implements CryptographyManager {
     }
 
     private SecretKey getOrCreateSecretKeyOld(String keyName, Context context) throws CryptoException {
+        Log.d("CORDOVA_BIOMETRIC", "getOrCreateSecretKeyOld");
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         end.add(Calendar.YEAR, 1);
@@ -70,20 +68,14 @@ class CryptographyManagerImpl implements CryptographyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private SecretKey getOrCreateSecretKeyNew(String keyName, boolean invalidateOnEnrollment) throws CryptoException {
+        Log.d("CORDOVA_BIOMETRIC", "getOrCreateSecretKeyNew");
         try {
             // If Secretkey was previously created for that keyName, then grab and return it.
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null); // Keystore must be loaded before it can be accessed
-            Enumeration<String> aliases = keyStore.aliases();
-
-            while(aliases.hasMoreElements()) {
-                String alias = aliases.nextElement();
-                Log.d("CORDOVA_FINGERPRINT_PLUGIN Alias", alias);
-            }
 
             SecretKey key = (SecretKey) keyStore.getKey(keyName, null);
             if (key != null) {
-                Log.d("CORDOVA_FINGERPRINT_PLUGIN Key", key.toString());
                 return key;
             }
 
@@ -96,7 +88,6 @@ class CryptographyManagerImpl implements CryptographyManager {
                     .setUserAuthenticationRequired(true);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Log.d("CORDOVA_FINGERPRINT_PLUGIN", invalidateOnEnrollment+"");
                 keyGenParamsBuilder.setInvalidatedByBiometricEnrollment(invalidateOnEnrollment);
             }
 
@@ -106,7 +97,6 @@ class CryptographyManagerImpl implements CryptographyManager {
 
             return keyGenerator.generateKey();
         } catch (Exception e) {
-            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION", e.getMessage());
             throw new CryptoException(e.getMessage(), e);
         }
     }
@@ -144,7 +134,6 @@ class CryptographyManagerImpl implements CryptographyManager {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(128, initializationVector));
             return cipher;
         } catch (Exception e) {
-            Log.d("CORDOVA_FINGERPRINT_PLUGIN_EXCEPTION getInitializedCipherForDecryption", e.getMessage());
             handleException(e, keyName);
             throw new CryptoException(e.getMessage(), e);
         }
