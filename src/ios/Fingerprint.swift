@@ -277,6 +277,7 @@ class Secret {
         // context.touchIDAuthenticationAllowableReuseDuration = 10
 
         // Build the query for use in the add operation.
+        print("Secret keyName on save: ", Secret.keyName)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: Secret.keyName,
                                     kSecAttrAccessControl as String: getBioSecAccessControl(invalidateOnEnrollment: invalidateOnEnrollment),
@@ -287,6 +288,7 @@ class Secret {
     }
 
     func load(_ prompt: String) throws -> String {
+        print("Secret keyName on load: ", Secret.keyName)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: Secret.keyName,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
