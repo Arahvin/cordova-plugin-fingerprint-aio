@@ -1,5 +1,7 @@
 package de.niklasmerz.cordova.biometric;
 
+import android.util.Log;
+
 class CryptoException extends Exception {
     private PluginError error;
 
