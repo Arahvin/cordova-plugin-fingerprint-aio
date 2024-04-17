@@ -20,7 +20,7 @@ class EncryptedData {
         this.secretKey = secretKey;
     }
 
-    byte[] loadInitializationVector(Context context) throws CryptoException {
+    static byte[] loadInitializationVector(Context context, String secretKey) throws CryptoException {
         return load(IV_KEY_NAME+secretKey, context);
     }
 

@@ -81,7 +81,7 @@ public class BiometricActivity extends AppCompatActivity {
     }
 
     private void authenticateToDecrypt() throws CryptoException {
-        byte[] initializationVector = EncryptedData.loadInitializationVector(this);
+        byte[] initializationVector = EncryptedData.loadInitializationVector(this, mPromptInfo.getSecretKey());
         Cipher cipher = mCryptographyManager
                 .getInitializedCipherForDecryption(mPromptInfo.getSecretKey(), initializationVector, this);
         mBiometricPrompt.authenticate(createPromptInfo(), new BiometricPrompt.CryptoObject(cipher));
@@ -213,7 +213,7 @@ public class BiometricActivity extends AppCompatActivity {
 
     private void encrypt(BiometricPrompt.CryptoObject cryptoObject) throws CryptoException {
         String text = mPromptInfo.getSecret();
-        EncryptedData encryptedData = mCryptographyManager.encryptData(text, cryptoObject.getCipher());
+        EncryptedData encryptedData = mCryptographyManager.encryptData(text, cryptoObject.getCipher(), mPromptInfo.getSecretKey());
         encryptedData.save(this);
     }
 
