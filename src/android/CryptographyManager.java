@@ -21,7 +21,7 @@ interface CryptographyManager {
     /**
      * The Cipher created with [getInitializedCipherForEncryption] is used here
      */
-    EncryptedData encryptData(String plaintext, Cipher cipher) throws CryptoException;
+    EncryptedData encryptData(String plaintext, Cipher cipher, String secretKey) throws CryptoException;
 
     /**
      * The Cipher created with [getInitializedCipherForDecryption] is used here
