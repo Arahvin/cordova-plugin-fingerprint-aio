@@ -220,6 +220,8 @@ public class BiometricActivity extends AppCompatActivity {
     private Intent getDecryptedIntent(BiometricPrompt.CryptoObject cryptoObject) throws CryptoException {
         try {
             byte[] ciphertext = EncryptedData.loadCiphertext(this);
+            Log.d("CORDOVA_BIOMETRIC cipherText", ciphertext+"");
+            Log.d("CORDOVA_BIOMETRIC cryptoObject.getCipher", cryptoObject.getCipher()+"");
             String secret = mCryptographyManager.decryptData(ciphertext, cryptoObject.getCipher());
             if (secret != null) {
                 Intent intent = new Intent();
@@ -228,6 +230,7 @@ public class BiometricActivity extends AppCompatActivity {
             }
         } catch (CryptoException e) {
             Log.d("CORDOVA_BIOMETRIC", e.getMessage()+"");
+            Log.d("CORDOVA_BIOMETRIC", e.getCause().getMessage()+"");
         }
         return null;
     }
