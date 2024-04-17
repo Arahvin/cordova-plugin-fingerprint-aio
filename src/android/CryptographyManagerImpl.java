@@ -46,7 +46,6 @@ class CryptographyManagerImpl implements CryptographyManager {
     }
 
     private SecretKey getOrCreateSecretKeyOld(String keyName, Context context) throws CryptoException {
-        Log.d("CORDOVA_BIOMETRIC", "getOrCreateSecretKeyOld");
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         end.add(Calendar.YEAR, 1);
@@ -70,7 +69,6 @@ class CryptographyManagerImpl implements CryptographyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private SecretKey getOrCreateSecretKeyNew(String keyName, boolean invalidateOnEnrollment) throws CryptoException {
-        Log.d("CORDOVA_BIOMETRIC", "getOrCreateSecretKeyNew");
         try {
             // If Secretkey was previously created for that keyName, then grab and return it.
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
@@ -155,7 +153,6 @@ class CryptographyManagerImpl implements CryptographyManager {
     public EncryptedData encryptData(String plaintext, Cipher cipher, String secretKey) throws CryptoException {
         try {
             byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
-            Log.d("CORDOVA_BIOMETRIC", cipher.getIV()+"");
             return new EncryptedData(ciphertext, cipher.getIV(), secretKey);
         } catch (Exception e) {
             throw new CryptoException(e.getMessage(), e);

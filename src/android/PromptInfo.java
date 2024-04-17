@@ -135,7 +135,7 @@ class PromptInfo {
             confirmationRequired = args.getBoolean(CONFIRMATION_REQUIRED, confirmationRequired);
             invalidateOnEnrollment = args.getBoolean(INVALIDATE_ON_ENROLLMENT, false);
             secret = args.getString(SECRET, null);
-            secretKey = args.getString(SECRET_KEY, null);
+            secretKey = args.getString(SECRET_KEY, secretKey);
         }
     }
 }
