@@ -223,6 +223,7 @@ public class BiometricActivity extends AppCompatActivity {
             Log.d("CORDOVA_BIOMETRIC cipherText", ciphertext+"");
             Log.d("CORDOVA_BIOMETRIC cryptoObject.getCipher", cryptoObject.getCipher()+"");
             String secret = mCryptographyManager.decryptData(ciphertext, cryptoObject.getCipher());
+            Log.d("CORDOVA_BIOMETRIC secret", secret+"");
             if (secret != null) {
                 Intent intent = new Intent();
                 intent.putExtra(PromptInfo.SECRET_EXTRA, secret);
