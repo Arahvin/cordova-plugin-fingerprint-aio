@@ -64,7 +64,7 @@ public class Fingerprint extends CordovaPlugin {
     private void executeIsAvailable(JSONArray args) {
         boolean requireStrongBiometrics = false;
 
-        if(args || args.length) {
+        if(args || args.length()) {
             requireStrongBiometrics = new Args(args).getBoolean("requireStrongBiometrics", false);
         }
         
